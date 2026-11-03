@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tabulator: add row above on a sorted, paginated table</title>
+  <link rel="stylesheet" href="../dist/css/tabulator.css" />
+  <script src="../dist/js/tabulator.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; }
+    #example-table { max-width: 640px; }
+  </style>
+</head>
+<body>
+  <h1>Add row above, sorted and paginated</h1>
+  <p>
+    Sort by "Last name", then right-click a row and choose "Add row above".
+    The new row should appear directly above the row you clicked.
+  </p>
+
+  <div id="example-table"></div>
+
+  <script>
+    var tabledata = [
+      { id: 1, first: "Anna", last: "Zeller", city: "Berlin" },
+      { id: 2, first: "Bert", last: "Dort", city: "Hamburg" },
+      { id: 3, first: "Carl", last: "Meyer", city: "Munich" },
+      { id: 4, first: "Dana", last: "Abel", city: "Cologne" },
+      { id: 5, first: "Emil", last: "Kraus", city: "Leipzig" },
+      { id: 6, first: "Frida", last: "Schmidt", city: "Dresden" },
+      { id: 7, first: "Gustav", last: "Brandt", city: "Bremen" },
+      { id: 8, first: "Hanna", last: "Vogel", city: "Essen" },
+    ];
+
+    var nextId = 100;
+
+    var table = new Tabulator("#example-table", {
+      data: tabledata,
+      layout: "fitColumns",
+      pagination: "local",
+      paginationSize: 10,
+      paginationCounter: "rows",
+      rowContextMenu: [
+        {
+          label: "Add row above",
+          action: function(e, row){
+            row.getTable().addRow({ id: nextId++, first: "New row" }, true, row);
+          },
+        },
+        {
+          label: "Add row below",
+          action: function(e, row){
+            row.getTable().addRow({ id: nextId++, first: "New row" }, false, row);
+          },
+        },
+      ],
+      columns: [
+        { title: "First name", field: "first", sorter: "string" },
+        { title: "Last name", field: "last", sorter: "string" },
+        { title: "City", field: "city", sorter: "string" },
+      ],
+    });
+  </script>
+</body>
+</html>
